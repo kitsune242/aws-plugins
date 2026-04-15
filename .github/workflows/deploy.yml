@@ -1,0 +1,26 @@
+name: "Deploy Changed Plugins"
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'plugins/**'
+
+jobs:
+  detect:
+    uses: ./.github/workflows/detect.yml
+
+  deploy:
+    needs: detect
+    if: needs.detect.outputs.plugins != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin_path: ${{ fromJson(needs.detect.outputs.plugins) }}
+
+    uses: roche-oli/oli-poc-common/.github/workflows/plugin-deploy.yml@v1.0.0
+    secrets: inherit
+    with:
+      plugin_path: ${{ matrix.plugin_path }}
+      env: dev
+      common_ref: "v1.0.0"

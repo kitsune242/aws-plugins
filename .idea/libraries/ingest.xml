@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ingest">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/plugins/puls_data/etl/ingest.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

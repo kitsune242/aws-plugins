@@ -1,0 +1,22 @@
+name: "CI for Plugins"
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**'
+
+jobs:
+  detect:
+    uses: ./.github/workflows/detect.yml
+
+  test:
+    needs: detect
+    if: needs.detect.outputs.plugins != '[]'
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin_path: ${{ fromJson(needs.detect.outputs.plugins) }}
+
+    uses: roche-oli/oli-poc-common/.github/workflows/plugin-ci.yml@v1.0.0
+    with:
+      plugin_path: ${{ matrix.plugin_path }}
