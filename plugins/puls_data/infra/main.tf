@@ -130,3 +130,4 @@ module "puls_ingest_lambda" {
     ManagedBy   = "terraform"
   }
 }
+
