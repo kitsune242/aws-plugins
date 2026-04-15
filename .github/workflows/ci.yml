@@ -17,6 +17,6 @@ jobs:
       matrix:
         plugin_path: ${{ fromJson(needs.detect.outputs.plugins) }}
 
-    uses: roche-oli/oli-poc-common/.github/workflows/plugin-ci.yml@v1.0.0
+    uses: kitsune242/aws-common/.github/workflows/plugin-ci.yml@v1.0.0
     with:
       plugin_path: ${{ matrix.plugin_path }}

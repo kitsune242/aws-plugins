@@ -18,7 +18,7 @@ variable "project_name" {
   type        = string
 }
 
-# Optional overrides — if null, values are read from oli-poc-core remote state
+# Optional overrides — if null, values are read from aws-core remote state
 variable "landing_bucket_id" {
   description = "ID of the landing zone bucket (auto-read from core state if null)"
   type        = string
@@ -39,7 +39,7 @@ variable "landing_notification_topic_arn" {
 
 # Read core infrastructure outputs from remote state.
 # State key matches what terraform.yml computes: inputs.path + "/terraform.tfstate"
-# For oli-poc-core with path="infra" → "infra/terraform.tfstate"
+# For aws-core with path="infra" → "infra/terraform.tfstate"
 data "terraform_remote_state" "core" {
   backend = "s3"
   config = {
@@ -58,7 +58,7 @@ locals {
 data "aws_caller_identity" "current" {}
 
 module "raw_puls_data_notification" {
-  source     = "git::https://github.com/roche-oli/oli-poc-common.git//infra/modules/sns_topic?ref=v1.0.0"
+  source     = "git::https://github.com/kitsune242/aws-common.git//infra/modules/sns_topic?ref=v1.0.0"
   topic_name = "${var.project_name}-raw-puls-data-notification-${var.region}-${var.environment}"
   tags = {
     Environment = var.environment
@@ -110,7 +110,7 @@ data "aws_iam_policy_document" "puls_ingest_policy" {
 }
 
 module "puls_ingest_lambda" {
-  source                     = "git::https://github.com/roche-oli/oli-poc-common.git//infra/modules/lambda_function?ref=v1.0.0"
+  source                     = "git::https://github.com/kitsune242/aws-common.git//infra/modules/lambda_function?ref=v1.0.0"
   function_name              = "${var.project_name}-puls-ingest-${var.region}-${var.environment}"
   handler                    = "ingest.lambda_handler"
   runtime                    = "python3.12"
